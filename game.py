@@ -88,9 +88,9 @@ class Game:
         self.first = False
         self.sound.play_music(self.sound.select_song())
 
-    def show_high_scores_screen(self):
-        high_score_screen = HighScoreScreen(self)
-        high_score_screen.run()
+    # def show_high_scores_screen(self):
+    #     high_score_screen = HighScoreScreen(self)
+    #     high_score_screen.run()
 
     def play(self):
         self.launch_screen.run()
