@@ -4,15 +4,14 @@ import pygame as pg
 from settings import Settings
 from vector import Vector
 from game_stats import GameStats
-
-# from button import Button
-from sound import Sound
+from scoreboard import Scoreboard
 from board import Board
+from sound import Sound
 
 # TODO: implement classes that are commented out
-from scoreboard import Scoreboard
 
-# from launch import LaunchScreen
+# from button import Button
+from launch_screen import LaunchScreen
 
 
 class Game:
@@ -34,7 +33,7 @@ class Game:
         self.stats = GameStats(game=self)
         self.board = Board(game=self)
         self.sb = Scoreboard(game=self)
-        # self.launch_screen = LaunchScreen(game=self)
+        self.launch_screen = LaunchScreen(game=self)
         self.game_active = False  # MUST be before Button is created
         self.first = True
         # self.play_button = Button(game=self, text="Play")
@@ -99,7 +98,7 @@ class Game:
     #     high_score_screen.run()
 
     def play(self):
-        # self.launch_screen.run()
+        self.launch_screen.run()
         finished = False
         self.screen.fill(self.settings.bg_color)
 

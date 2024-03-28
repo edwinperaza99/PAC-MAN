@@ -14,6 +14,7 @@ class Scoreboard:
         self.stats = game.stats
         self.text_color = (255, 255, 255)  # white color
         # self.text_color = (30, 30, 30) # dark color
+        # might change font to 'couriernew' or 'courier'
         self.font = pg.font.SysFont(None, 28)
         self.prep()
         self.prep_high_score()
@@ -65,7 +66,7 @@ class Scoreboard:
         self.high_score_value_rect.top = self.high_score_rect.bottom + 5
 
     def prep_level(self):
-        level_str = f"Level: {self.stats.level}"
+        level_str = f"LEVEL: {self.stats.level}"
         self.level_image = self.font.render(
             level_str, True, self.text_color, self.settings.bg_color
         )

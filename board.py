@@ -4,6 +4,7 @@ from math import pi as PI
 # 0 = empty black rectangle, 1 = dot, 2 = big dot, 3 = vertical line,
 # 4 = horizontal line, 5 = top right, 6 = top left, 7 = bot left, 8 = bot right
 # 9 = gate
+# NOTE: padding top is done with rows of 0s in board
 boards = [[
 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -58,7 +59,8 @@ class Board:
         self.board_height = 36
     
     def draw_board(self):
-        num1 = ((self.settings.screen_height - 100) // 32)
+        padding_bottom = 100
+        num1 = ((self.settings.screen_height - padding_bottom) // 32)
         num2 = (self.settings.screen_width // 30)
         level = self.levels[self.current_level]
         for i in range(len(level)):
