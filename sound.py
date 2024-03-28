@@ -7,14 +7,12 @@ class Sound:
     def __init__(self, game):
         self.game = game
         mixer.init()
-        self.ship_laser = mixer.Sound("sounds/ship_laser.wav")
+        # self.ship_laser = mixer.Sound("sounds/ship_laser.wav")
         self.current_song = 0
         self.songs = ["sounds/Melody.wav", "sounds/koala.wav", "sounds/This_Groove.wav"]
         self.volume = 0.25
         self.set_volume(self.volume)
-        self.set_effects_volume(
-            ship=0.15,
-        )
+        # self.set_effects_volume(ship=0.15)
 
     def reset(self):
         self.current_song = 0
@@ -27,8 +25,8 @@ class Sound:
             self.current_song += 1
         return self.songs[self.current_song]
 
-    def set_effects_volume(self, ship=0.25):
-        self.ship_laser.set_volume(ship)
+    # def set_effects_volume(self, ship=0.25):
+    # self.ship_laser.set_volume(ship)
 
     def set_volume(self, volume=0.3):
         mixer.music.set_volume(volume)

@@ -4,8 +4,10 @@ import pygame as pg
 from settings import Settings
 from vector import Vector
 from game_stats import GameStats
-from button import Button
+
+# from button import Button
 from sound import Sound
+from board import Board
 
 # TODO: implement classes that are commented out
 # from scoreboard import Scoreboard
@@ -29,42 +31,45 @@ class Game:
         pg.display.set_caption("PAC-MAN")
         self.sound = Sound(game=self)
         self.stats = GameStats(game=self)
+        self.board = Board(game=self)
         # self.sb = Scoreboard(game=self)
         # self.launch_screen = LaunchScreen(game=self)
         self.game_active = False  # MUST be before Button is created
         self.first = True
-        self.play_button = Button(game=self, text="Play")
+        # self.play_button = Button(game=self, text="Play")
 
     def check_events(self):
         for event in pg.event.get():
             type = event.type
             if type == pg.KEYUP:
                 key = event.key
-                if key == pg.K_SPACE:
-                    self.ship.cease_fire()
-                elif key in Game.key_velocity:
-                    self.ship.all_stop()
+                # if key == pg.K_SPACE:
+                #     self.ship.cease_fire()
+                # elif key in Game.key_velocity:
+                #     self.ship.all_stop()
             elif type == pg.QUIT:
                 pg.quit()
                 sys.exit()
             elif type == pg.KEYDOWN:
                 key = event.key
-                if key == pg.K_SPACE:
-                    self.ship.fire_everything()
-                elif key == pg.K_p:
-                    self.play_button.select(True)
-                    self.play_button.press()
+                if key == pg.K_p:
+                    pass
+                    # self.play_button.select(True)
+                    # self.play_button.press()
                 elif key in Game.key_velocity:
-                    self.ship.add_speed(Game.key_velocity[key])
+                    pass
+                    # self.ship.add_speed(Game.key_velocity[key])
             elif type == pg.MOUSEBUTTONDOWN:
-                b = self.play_button
-                x, y = pg.mouse.get_pos()
-                if b.rect.collidepoint(x, y):
-                    b.press()
+                pass
+                # b = self.play_button
+                # x, y = pg.mouse.get_pos()
+                # if b.rect.collidepoint(x, y):
+                # b.press()
             elif type == pg.MOUSEMOTION:
-                b = self.play_button
-                x, y = pg.mouse.get_pos()
-                b.select(b.rect.collidepoint(x, y))
+                pass
+                # b = self.play_button
+                # x, y = pg.mouse.get_pos()
+                # b.select(b.rect.collidepoint(x, y))
 
     def restart(self):
         self.screen.fill(self.settings.bg_color)
@@ -81,7 +86,7 @@ class Game:
         self.stats.reset()
         self.sound.reset()
         self.restart()
-        self.launch_screen.run()  # kinda works but there is a bug
+        # self.launch_screen.run()  # kinda works but there is a bug
 
     def activate(self):
         self.game_active = True
@@ -93,7 +98,7 @@ class Game:
     #     high_score_screen.run()
 
     def play(self):
-        self.launch_screen.run()
+        # self.launch_screen.run()
         finished = False
         self.screen.fill(self.settings.bg_color)
 
@@ -103,9 +108,11 @@ class Game:
             if self.game_active or self.first:
                 self.first = False
                 self.screen.fill(self.settings.bg_color)
-                self.sb.update()
+                # self.sb.update()
+                self.board.update()
             else:
-                self.play_button.update()
+                pass
+                # self.play_button.update()
 
             pg.display.flip()
             time.sleep(0.02)
