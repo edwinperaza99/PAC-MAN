@@ -10,7 +10,8 @@ from sound import Sound
 from board import Board
 
 # TODO: implement classes that are commented out
-# from scoreboard import Scoreboard
+from scoreboard import Scoreboard
+
 # from launch import LaunchScreen
 
 
@@ -32,7 +33,7 @@ class Game:
         self.sound = Sound(game=self)
         self.stats = GameStats(game=self)
         self.board = Board(game=self)
-        # self.sb = Scoreboard(game=self)
+        self.sb = Scoreboard(game=self)
         # self.launch_screen = LaunchScreen(game=self)
         self.game_active = False  # MUST be before Button is created
         self.first = True
@@ -108,7 +109,7 @@ class Game:
             if self.game_active or self.first:
                 self.first = False
                 self.screen.fill(self.settings.bg_color)
-                # self.sb.update()
+                self.sb.update()
                 self.board.update()
             else:
                 pass
