@@ -1,8 +1,8 @@
 class Settings:
     def __init__(self):
-        self.screen_width = 1200
-        self.screen_height = 700
-        self.bg_color = (40, 40, 40)
+        self.screen_width = 900
+        self.screen_height = 950
+        self.bg_color = (10, 10, 10)
         self.lives = 3
 
 

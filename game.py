@@ -29,8 +29,8 @@ class Game:
         pg.display.set_caption("PAC-MAN")
         self.sound = Sound(game=self)
         self.stats = GameStats(game=self)
-        self.sb = Scoreboard(game=self)
-        self.launch_screen = LaunchScreen(game=self)
+        # self.sb = Scoreboard(game=self)
+        # self.launch_screen = LaunchScreen(game=self)
         self.game_active = False  # MUST be before Button is created
         self.first = True
         self.play_button = Button(game=self, text="Play")
