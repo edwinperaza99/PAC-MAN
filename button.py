@@ -96,4 +96,4 @@ class Button:
 
 
 if __name__ == "__main__":
-    print("\nERROR: button.py is the wrong file! Run play from alien_invasions.py\n")
+    print("\nERROR: button.py is the wrong file! Run play from game.py\n")

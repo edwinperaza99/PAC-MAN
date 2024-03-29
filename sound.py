@@ -65,3 +65,7 @@ class Sound:
         time.sleep(3)
         self.set_volume(self.volume)
         self.stop_music()
+
+
+if __name__ == "__main__":
+    print("\nERROR: sound.py is the wrong file! Run play from game.py\n")

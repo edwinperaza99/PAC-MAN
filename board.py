@@ -94,3 +94,7 @@ class Board:
                     
     def update(self):
         self.draw_board()
+        
+        
+if __name__ == "__main__":
+    print("\nERROR: board.py is the wrong file! Run play from game.py\n")

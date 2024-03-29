@@ -21,3 +21,7 @@ class GameStats:
     def save_high_score(self):
         with open("high_score.txt", "w") as f:
             f.write(str(self.high_score))
+
+
+if __name__ == "__main__":
+    print("\nERROR: game_stats.py is the wrong file! Run play from game.py\n")

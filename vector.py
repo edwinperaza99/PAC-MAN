@@ -97,4 +97,4 @@ class Vector(object):
 
 
 if __name__ == "__main__":
-    print("\nERROR: vector.py is the wrong file! Run play from alien_invasions.py\n")
+    print("\nERROR: vector.py is the wrong file! Run play from game.py\n")

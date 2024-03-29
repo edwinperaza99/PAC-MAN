@@ -83,3 +83,7 @@ class LaunchScreen:
             if self.play_button.clicked:
                 self.game.play()
                 break
+
+
+if __name__ == "__main__":
+    print("\nERROR: launch_screen.py is the wrong file! Run play from game.py\n")
