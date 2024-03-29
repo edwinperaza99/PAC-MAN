@@ -50,6 +50,14 @@ class Sound:
     def stop_music(self):
         mixer.music.stop()
 
+    def play_start_up(self):
+        self.stop_music()
+        self.play_once("sounds/start_up.wav")
+        time.sleep(5)
+        self.play_music("sounds/waka_waka.wav")
+        # self.set_volume(self.volume)
+        # self.stop_music()
+
     def play_ship_laser(self):
         mixer.Sound.play(self.ship_laser)
 

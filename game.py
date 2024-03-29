@@ -91,6 +91,7 @@ class Game:
     def activate(self):
         self.game_active = True
         self.first = False
+        self.sound.play_start_up()
         # TODO: ADD MUSIC
         # self.sound.play_music(self.sound.select_song())
 

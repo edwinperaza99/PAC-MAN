@@ -15,7 +15,12 @@ class LaunchScreen:
         self.font = pg.font.SysFont(None, 68)
         self.logo = pg.image.load("images/pac-man-logo.png")
         self.play_button = Button(
-            game=self.game, text="Play", pos=(450, 640), selected_color=(255, 7, 58)
+            game=self.game,
+            text="Play",
+            pos=(300, 650),
+            size=(250, 70),
+            selected_color=(57, 255, 20),
+            bg_color=(255, 7, 58),
         )
 
     def check_events(self):
