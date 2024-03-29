@@ -73,9 +73,9 @@ class Game:
 
     def restart(self):
         self.screen.fill(self.settings.bg_color)
-        self.ship.reset()
-        self.aliens.reset()
-        self.settings.initialize_dynamic_settings()
+        # self.ship.reset()
+        # self.aliens.reset()
+        # self.settings.initialize_dynamic_settings()
 
     def game_over(self):
         print("Game Over !")
@@ -91,7 +91,8 @@ class Game:
     def activate(self):
         self.game_active = True
         self.first = False
-        self.sound.play_music(self.sound.select_song())
+        # TODO: ADD MUSIC
+        # self.sound.play_music(self.sound.select_song())
 
     # def show_high_scores_screen(self):
     #     high_score_screen = HighScoreScreen(self)
