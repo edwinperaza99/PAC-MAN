@@ -17,7 +17,7 @@ class LaunchScreen:
         self.play_button = Button(
             game=self.game,
             text="Play",
-            pos=(300, 650),
+            pos=(224, 500),
             size=(250, 70),
             selected_color=(57, 255, 20),
             bg_color=(255, 7, 58),
