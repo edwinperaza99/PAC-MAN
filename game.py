@@ -46,7 +46,7 @@ class Game:
         # TODO: pacman is added here
         self.pacman = Pacman(game=self, node=self.nodes.getStartTempNode())
         nodes = list(self.nodes.nodesLUT.values())
-        self.ghost = Ghost(game=self, node=nodes[10])
+        self.ghost = Ghost(game=self, node=nodes[10], pacman=self.pacman)
         # self.ghost = Ghost(game=self, node=self.nodes.getStartTempNode())
         self.pellets = PelletGroup(game=self, pelletfile="maze_1.txt")
         # self.play_button = Button(game=self, text="Play")
@@ -133,7 +133,7 @@ class Game:
                 dt = self.clock.tick(30) / 1000.0
                 self.pacman.update(dt=dt)
                 self.pellets.update(dt=dt, pacman=self.pacman)
-                self.ghost.update(dt=dt)
+                self.ghost.choose_mode(dt=dt)
             else:
                 pass
                 # self.play_button.update()

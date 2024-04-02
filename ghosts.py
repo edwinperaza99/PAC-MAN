@@ -7,7 +7,7 @@ from random import randint
 
 
 class Ghost(Sprite):
-    def __init__(self, game, node):
+    def __init__(self, game, node, pacman):
         self.name = None
         self.directions = {
             UP: Vector(0, -1),
@@ -33,6 +33,8 @@ class Ghost(Sprite):
         # change this variable to goal_direction to make the ghost chase pacman
         # self.direction_method = self.random_direction
         self.direction_method = self.goal_direction
+        self.pacman = pacman
+        self.mode = ModeController(self)
 
     def set_position(self):
         self.position = self.node.position.copy()
@@ -121,7 +123,58 @@ class Ghost(Sprite):
             self.set_position()
         self.draw(self.screen)
 
+    def choose_mode(self, dt):
+        self.mode.update(dt)
+        if self.mode.current is SCATTER:
+            self.scatter()
+        elif self.mode.current is CHASE:
+            self.chase()
+        self.update(dt)
+
+    def scatter(self):
+        self.goal = Vector()
+
+    def chase(self):
+        self.goal = self.pacman.position
+
     def draw(self, screen):
         if self.visible:
             p = self.position.asInt()
             pygame.draw.circle(screen, self.color, p, self.radius)
+
+
+class MainMode:
+    def __init__(self):
+        self.timer = 0
+        self.scatter()
+
+    def update(self, dt):
+        self.timer += dt
+        if self.timer >= self.time:
+            if self.mode is SCATTER:
+                self.chase()
+            elif self.mode is CHASE:
+                self.scatter()
+
+    def scatter(self):
+        self.mode = SCATTER
+        self.time = 7
+        self.timer = 0
+
+    def chase(self):
+        self.mode = CHASE
+        self.time = 20
+        self.timer = 0
+
+
+class ModeController:
+    def __init__(self, ghost):
+        self.timer = 0
+        self.time = None
+        self.mainmode = MainMode()
+        self.current = self.mainmode.mode
+        self.ghost = ghost
+
+    def update(self, dt):
+        self.mainmode.update(dt)
+        self.current = self.mainmode.mode
