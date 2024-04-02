@@ -5,8 +5,11 @@ from settings import Settings
 from vector import Vector
 from game_stats import GameStats
 from scoreboard import Scoreboard
-from board import Board
+from graph import NodeGroup
+
+# from board import Board
 from sound import Sound
+from pacman import Pacman
 
 # TODO: implement classes that are commented out
 
@@ -29,13 +32,18 @@ class Game:
             (self.settings.screen_width, self.settings.screen_height)
         )
         pg.display.set_caption("PAC-MAN")
+        self.nodes = NodeGroup(game=self, level="maze_1.txt")
+        self.nodes.setPortalPair((0, 17), (27, 17))
+        # self.nodes.setupTestNodes()
         self.sound = Sound(game=self)
         self.stats = GameStats(game=self)
-        self.board = Board(game=self)
+        # self.board = Board(game=self)
         self.sb = Scoreboard(game=self)
         self.launch_screen = LaunchScreen(game=self)
         self.game_active = False  # MUST be before Button is created
         self.first = True
+        # TODO: pacman is added here
+        self.pacman = Pacman(game=self, node=self.nodes.getStartTempNode())
         # self.play_button = Button(game=self, text="Play")
 
     def check_events(self):
@@ -45,8 +53,8 @@ class Game:
                 key = event.key
                 # if key == pg.K_SPACE:
                 #     self.ship.cease_fire()
-                # elif key in Game.key_velocity:
-                #     self.ship.all_stop()
+                # if key in Game.key_velocity:
+                #     self.pacman.all_stop()
             elif type == pg.QUIT:
                 pg.quit()
                 sys.exit()
@@ -56,9 +64,10 @@ class Game:
                     pass
                     # self.play_button.select(True)
                     # self.play_button.press()
-                elif key in Game.key_velocity:
-                    pass
-                    # self.ship.add_speed(Game.key_velocity[key])
+                # elif key in Game.key_velocity:
+                #     self.pacman.add_speed(Game.key_velocity[key])
+                #     pass
+                # self.ship.add_speed(Game.key_velocity[key])
             elif type == pg.MOUSEBUTTONDOWN:
                 pass
                 # b = self.play_button
@@ -91,7 +100,8 @@ class Game:
     def activate(self):
         self.game_active = True
         self.first = False
-        self.sound.play_start_up()
+        # TODO: add music later
+        # self.sound.play_start_up()
         # TODO: ADD MUSIC
         # self.sound.play_music(self.sound.select_song())
 
@@ -111,7 +121,9 @@ class Game:
                 self.first = False
                 self.screen.fill(self.settings.bg_color)
                 self.sb.update()
-                self.board.update()
+                self.nodes.update()
+                # self.board.update()
+                self.pacman.update()
             else:
                 pass
                 # self.play_button.update()
