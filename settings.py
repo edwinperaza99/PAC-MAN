@@ -9,6 +9,8 @@ class Settings:
         self.board_cols = 28
         self.board_rows = 36
         self.pacman_speed = 100 * self.tile_width / 16
+        self.pellet_points = 10
+        self.power_pellet_points = 50
 
         # was using 600 x 750
         self.screen_width = self.tile_width * self.board_cols

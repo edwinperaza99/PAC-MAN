@@ -27,11 +27,12 @@ class Pacman(Sprite):
 
         # TODO: add sprites for pacman here
         initial_position = self.position.asInt()  # Get initial position as a tuple
-        width_height = (
-            self.settings.tile_width,
-            self.settings.tile_width,
-        )  # Width and height
-        self.rect = pg.Rect(initial_position, width_height)
+        # self.width_height = (
+        #     self.settings.tile_width,
+        #     self.settings.tile_width,
+        # )  # Width and height
+        self.width_height = (5, 5)  # Width and height for collision
+        self.rect = pg.Rect(initial_position, self.width_height)
         self.is_dying = False
         self.node = node
         self.set_position()
@@ -102,12 +103,13 @@ class Pacman(Sprite):
                 return True
         return False
 
-    def update(self):
+    def update(self, dt):
+        self.rect = pg.Rect(self.position.asInt(), self.width_height)
         # TODO: change if pacman is dying and change sprites
         # if not self.is_dying:
         #     self.rect.x += self.position.x
         #     self.rect.y += self.position.y
-        dt = self.clock.tick(30) / 1000.0
+        # dt = self.clock.tick(30) / 1000.0
         self.position += self.directions[self.direction] * self.speed * dt
         direction = self.get_key()
         # if direction != STOP:
@@ -123,11 +125,9 @@ class Pacman(Sprite):
             self.target = self.get_new_target(direction)
             if self.target is not self.node:
                 self.direction = direction
-                print(self.direction)
             else:
                 self.target = self.get_new_target(self.direction)
             if self.target is self.node:
-                print("STOP")
                 self.direction = STOP
             self.set_position()
         else:

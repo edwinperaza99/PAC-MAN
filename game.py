@@ -10,6 +10,7 @@ from graph import NodeGroup
 # from board import Board
 from sound import Sound
 from pacman import Pacman
+from pellets import PelletGroup
 
 # TODO: implement classes that are commented out
 
@@ -34,7 +35,6 @@ class Game:
         pg.display.set_caption("PAC-MAN")
         self.nodes = NodeGroup(game=self, level="maze_1.txt")
         self.nodes.setPortalPair((0, 17), (27, 17))
-        # self.nodes.setupTestNodes()
         self.sound = Sound(game=self)
         self.stats = GameStats(game=self)
         # self.board = Board(game=self)
@@ -44,7 +44,9 @@ class Game:
         self.first = True
         # TODO: pacman is added here
         self.pacman = Pacman(game=self, node=self.nodes.getStartTempNode())
+        self.pellets = PelletGroup(game=self, pelletfile="maze_1.txt")
         # self.play_button = Button(game=self, text="Play")
+        self.clock = pg.time.Clock()
 
     def check_events(self):
         for event in pg.event.get():
@@ -123,7 +125,9 @@ class Game:
                 self.sb.update()
                 self.nodes.update()
                 # self.board.update()
-                self.pacman.update()
+                dt = self.clock.tick(30) / 1000.0
+                self.pacman.update(dt=dt)
+                self.pellets.update(dt=dt, pacman=self.pacman)
             else:
                 pass
                 # self.play_button.update()
