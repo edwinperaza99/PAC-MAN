@@ -45,7 +45,9 @@ class Game:
         self.first = True
         # TODO: pacman is added here
         self.pacman = Pacman(game=self, node=self.nodes.getStartTempNode())
-        self.ghost = Ghost(game=self, node=self.nodes.getStartTempNode())
+        nodes = list(self.nodes.nodesLUT.values())
+        self.ghost = Ghost(game=self, node=nodes[10])
+        # self.ghost = Ghost(game=self, node=self.nodes.getStartTempNode())
         self.pellets = PelletGroup(game=self, pelletfile="maze_1.txt")
         # self.play_button = Button(game=self, text="Play")
         self.clock = pg.time.Clock()

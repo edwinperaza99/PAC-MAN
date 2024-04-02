@@ -29,6 +29,10 @@ class Ghost(Sprite):
         self.target = node
         self.visible = True
         self.disablePortal = False
+        self.goal = Vector()
+        # change this variable to goal_direction to make the ghost chase pacman
+        # self.direction_method = self.random_direction
+        self.direction_method = self.goal_direction
 
     def set_position(self):
         self.position = self.node.position.copy()
@@ -86,13 +90,25 @@ class Ghost(Sprite):
     def random_direction(self, directions):
         return directions[randint(0, len(directions) - 1)]
 
+    def goal_direction(self, directions):
+        distances = []
+        for direction in directions:
+            vec = (
+                self.node.position
+                + self.directions[direction] * self.settings.tile_width
+                - self.goal
+            )
+            distances.append(vec.magnitudeSquared())
+        index = distances.index(min(distances))
+        return directions[index]
+
     def update(self, dt):
         self.position += self.directions[self.direction] * self.speed * dt
 
         if self.overshot_target():
             self.node = self.target
             directions = self.valid_directions()
-            direction = self.random_direction(directions)
+            direction = self.direction_method(directions)
             if not self.disablePortal:
                 if self.node.neighbors[PORTAL] is not None:
                     self.node = self.node.neighbors[PORTAL]
