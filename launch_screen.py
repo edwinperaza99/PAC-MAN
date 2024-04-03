@@ -80,8 +80,8 @@ class LaunchScreen:
     def run(self):
         self.play_button.clicked = False
         self.play_button.show()
-        # if not pg.mixer.music.get_busy():
-        # self.sound.play_music("sounds/space_invaders.wav")
+        if not pg.mixer.music.get_busy():
+            self.sound.play_music("sounds/launch_theme.wav")
         while not self.game.game_active:
             self.draw()
             self.check_events()

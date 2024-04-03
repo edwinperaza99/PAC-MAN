@@ -50,6 +50,7 @@ class PelletGroup:
     def __init__(self, game, pelletfile):
         self.game = game
         self.screen = game.screen
+        self.ghost = game.ghost
         self.stats = game.stats
         self.sb = game.sb
         self.settings = game.settings
@@ -73,6 +74,7 @@ class PelletGroup:
                 # increase score here if it is a power pellet
                 self.stats.score += self.settings.power_pellet_points
                 # handle giving powers to pacman and making ghosts vulnerable
+                self.ghost.start_freight_mode()
             else:
                 self.stats.score += self.settings.pellet_points
             self.sb.prep_score()

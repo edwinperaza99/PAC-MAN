@@ -17,6 +17,7 @@ from ghosts import Ghost
 
 # from button import Button
 from launch_screen import LaunchScreen
+from constants import *
 
 
 class Game:
@@ -36,6 +37,9 @@ class Game:
         pg.display.set_caption("PAC-MAN")
         self.nodes = NodeGroup(game=self, level="maze_1.txt")
         self.nodes.setPortalPair((0, 17), (27, 17))
+        home_key = self.nodes.createHomeNodes(11.5, 14)
+        self.nodes.connectHomeNodes(home_key, (12, 14), LEFT)
+        self.nodes.connectHomeNodes(home_key, (15, 14), RIGHT)
         self.sound = Sound(game=self)
         self.stats = GameStats(game=self)
         # self.board = Board(game=self)
@@ -47,6 +51,7 @@ class Game:
         self.pacman = Pacman(game=self, node=self.nodes.getStartTempNode())
         nodes = list(self.nodes.nodesLUT.values())
         self.ghost = Ghost(game=self, node=nodes[10], pacman=self.pacman)
+        self.ghost.set_spawn_node(self.nodes.getNodeFromTiles(2 + 11.5, 3 + 14))
         # self.ghost = Ghost(game=self, node=self.nodes.getStartTempNode())
         self.pellets = PelletGroup(game=self, pelletfile="maze_1.txt")
         # self.play_button = Button(game=self, text="Play")
@@ -108,6 +113,7 @@ class Game:
         self.game_active = True
         self.first = False
         # TODO: add music later
+        self.sound.stop_music()
         # self.sound.play_start_up()
         # TODO: ADD MUSIC
         # self.sound.play_music(self.sound.select_song())

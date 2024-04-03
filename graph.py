@@ -46,12 +46,16 @@ class NodeGroup:
                 ["+", "X", "X", "X", "+"],
             ]
         )
-
         self.createNodeTable(home_data, xoffset, yoffset)
         self.connectHorizontally(home_data, xoffset, yoffset)
         self.connectVertically(home_data, xoffset, yoffset)
         self.home_key = self.constructKey(xoffset + 2, yoffset)
         return self.home_key
+
+    def connectHomeNodes(self, home_key, other_key, direction):
+        key = self.constructKey(*other_key)
+        self.nodesLUT[home_key].neighbors[direction] = self.nodesLUT[key]
+        self.nodesLUT[key].neighbors[direction * -1] = self.nodesLUT[home_key]
 
     def readMazeFile(self, textfile):
         return np.loadtxt(textfile, dtype="<U1")

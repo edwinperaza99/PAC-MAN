@@ -123,6 +123,29 @@ class Ghost(Sprite):
             self.set_position()
         self.draw(self.screen)
 
+    def spawn(self):
+        self.goal = self.spawn_node.position
+
+    def set_spawn_node(self, node):
+        self.spawn_node = node
+
+    def start_spawn(self):
+        self.mode.set_spawn_mode()
+        if self.mode.current == SPAWN:
+            self.set_speed(150)
+            self.direction_method = self.goal_direction
+            self.spawn()
+
+    def start_freight_mode(self):
+        self.mode.start_freight()
+        if self.mode.current == FREIGHT:
+            self.set_speed(50)
+            self.direction_method = self.random_direction
+
+    def normal_mode(self):
+        self.set_speed(100)
+        self.direction_method = self.goal_direction
+
     def choose_mode(self, dt):
         self.mode.update(dt)
         if self.mode.current is SCATTER:
@@ -141,6 +164,86 @@ class Ghost(Sprite):
         if self.visible:
             p = self.position.asInt()
             pygame.draw.circle(screen, self.color, p, self.radius)
+
+
+class Blinky(Ghost):
+    def __init__(self, game, node, pacman=None):
+        Ghost.__init__(self, game, node, pacman)
+        self.color = RED
+
+
+class Pinky(Ghost):
+    def __init__(self, game, node, pacman=None):
+        Ghost.__init__(self, game, node, pacman)
+        self.color = PINK
+        self.settings = game.settings
+
+    def scatter(self):
+        self.goal = Vector(self.settings.tile_width * self.settings.board_cols, 0)
+
+    def chase(self):
+        self.goal = (
+            self.pacman.position
+            + self.pacman.directions[self.pacman.direction]
+            * self.settings.tile_width
+            * 4
+        )
+
+
+class Inky(Ghost):
+    def __init__(self, game, node, pacman=None):
+        Ghost.__init__(self, game, node, pacman)
+        self.color = TEAL
+        self.settings = game.settings
+
+    def scatter(self):
+        self.goal = Vector(
+            self.settings.tile_width * self.settings.board_cols,
+            self.settings.tile_height * self.settings.board_rows,
+        )
+
+    def chase(self):
+        vec1 = (
+            self.pacman.position
+            + self.pacman.directions[self.pacman.direction]
+            * self.settings.tile_width
+            * 2
+        )
+        vec2 = (vec1 - self.blinky.position) * 2
+        self.goal = self.blinky.position + vec2
+
+
+class Clyde(Ghost):
+    def __init__(self, game, node, pacman=None):
+        Ghost.__init__(self, game, node, pacman)
+        self.color = ORANGE
+        self.settings = game.settings
+
+    def scatter(self):
+        self.goal = Vector(0, self.settings.tile_height * self.settings.board_rows)
+
+    def chase(self):
+        self.goal = (
+            self.pacman.position
+            + self.pacman.directions[self.pacman.direction]
+            * self.settings.tile_width
+            * 4
+        )
+
+
+class Ghosts:
+    def __init__(self, game, node, pacman):
+        self.game = game
+        self.pacman = pacman
+        self.blinky = Blinky(node, pacman)
+        self.pinky = Pinky(node, pacman)
+        self.inky = Inky(node, pacman, self.blinky)
+        self.clyde = Clyde(node, pacman)
+        self.ghosts = [self.blinky, self.pinky, self.inky, self.clyde]
+
+    def update(self, dt):
+        for ghost in self.ghosts:
+            ghost.choose_mode(dt)
 
 
 class MainMode:
@@ -175,6 +278,29 @@ class ModeController:
         self.current = self.mainmode.mode
         self.ghost = ghost
 
+    def start_freight(self):
+        if self.current in [SCATTER, CHASE]:
+            self.timer = 0
+            self.time = 7
+            self.current = FREIGHT
+        elif self.current is FREIGHT:
+            self.timer = 0
+
+    def set_spawn_mode(self):
+        if self.current is FREIGHT:
+            self.current = SPAWN
+
     def update(self, dt):
         self.mainmode.update(dt)
-        self.current = self.mainmode.mode
+        if self.current is FREIGHT:
+            self.timer += dt
+            if self.timer >= self.time:
+                self.time = None
+                self.ghost.normal_mode()
+                self.current = self.mainmode.mode
+        elif self.current in [SCATTER, CHASE]:
+            self.current = self.mainmode.mode
+        if self.current is SPAWN:
+            if self.ghost.node == self.ghost.spawn_node:
+                self.ghost.normal_mode()
+                self.current = self.mainmode.mode
