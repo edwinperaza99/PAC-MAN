@@ -11,7 +11,7 @@ from graph import NodeGroup
 from sound import Sound
 from pacman import Pacman
 from pellets import PelletGroup
-from ghosts import Ghost
+from ghosts import Ghosts
 
 # TODO: implement classes that are commented out
 
@@ -48,10 +48,15 @@ class Game:
         self.game_active = False  # MUST be before Button is created
         self.first = True
         # TODO: pacman is added here
-        self.pacman = Pacman(game=self, node=self.nodes.getStartTempNode())
+        self.pacman = Pacman(game=self, node=self.nodes.getNodeFromTiles(15, 26))
         nodes = list(self.nodes.nodesLUT.values())
-        self.ghost = Ghost(game=self, node=nodes[10], pacman=self.pacman)
-        self.ghost.set_spawn_node(self.nodes.getNodeFromTiles(2 + 11.5, 3 + 14))
+        self.ghosts = Ghosts(game=self, node=nodes[10], pacman=self.pacman)
+        self.ghosts.blinky.set_start_node(self.nodes.getNodeFromTiles(2 + 11.5, 0 + 14))
+        self.ghosts.pinky.set_start_node(self.nodes.getNodeFromTiles(2 + 11.5, 3 + 14))
+        self.ghosts.inky.set_start_node(self.nodes.getNodeFromTiles(0 + 11.5, 3 + 14))
+        self.ghosts.clyde.set_start_node(self.nodes.getNodeFromTiles(4 + 11.5, 3 + 14))
+        self.ghosts.set_spawn_node(self.nodes.getNodeFromTiles(2 + 11.5, 3 + 14))
+
         # self.ghost = Ghost(game=self, node=self.nodes.getStartTempNode())
         self.pellets = PelletGroup(game=self, pelletfile="maze_1.txt")
         # self.play_button = Button(game=self, text="Play")
@@ -118,6 +123,22 @@ class Game:
         # TODO: ADD MUSIC
         # self.sound.play_music(self.sound.select_song())
 
+    def next_level(self):
+        # TODO: probably add a pause for a smoother transition between levels
+        # maybe even play a sound
+        self.restart()
+        self.stats.level += 1
+        self.sb.prep_level()
+        self.sb.prep_score()
+        self.pellets = PelletGroup(game=self, pelletfile="maze_1.txt")
+        self.pacman.reset()
+        self.ghosts.reset()
+        self.ghosts.blinky.set_start_node(self.nodes.getNodeFromTiles(2 + 11.5, 0 + 14))
+        self.ghosts.pinky.set_start_node(self.nodes.getNodeFromTiles(2 + 11.5, 3 + 14))
+        self.ghosts.inky.set_start_node(self.nodes.getNodeFromTiles(0 + 11.5, 3 + 14))
+        self.ghosts.clyde.set_start_node(self.nodes.getNodeFromTiles(4 + 11.5, 3 + 14))
+        self.ghosts.set_spawn_node(self.nodes.getNodeFromTiles(2 + 11.5, 3 + 14))
+
     # def show_high_scores_screen(self):
     #     high_score_screen = HighScoreScreen(self)
     #     high_score_screen.run()
@@ -139,7 +160,7 @@ class Game:
                 dt = self.clock.tick(30) / 1000.0
                 self.pacman.update(dt=dt)
                 self.pellets.update(dt=dt, pacman=self.pacman)
-                self.ghost.choose_mode(dt=dt)
+                self.ghosts.update(dt=dt)
             else:
                 pass
                 # self.play_button.update()

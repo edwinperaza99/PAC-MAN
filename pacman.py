@@ -38,12 +38,16 @@ class Pacman(Sprite):
         self.set_position()
         self.target = node
         self.clock = pg.time.Clock()
+        self.initial_node = node
 
     def set_position(self):
         self.position = self.node.position.copy()
 
     def reset(self):
+        self.node = self.initial_node
+        self.target = self.initial_node
         self.set_position()
+        self.direction = STOP
         self.is_dying = False
         # set timer to regular pacman sprite here
 

@@ -8,6 +8,7 @@ from random import randint
 
 class Ghost(Sprite):
     def __init__(self, game, node, pacman):
+        super().__init__()
         self.name = None
         self.directions = {
             UP: Vector(0, -1),
@@ -24,9 +25,9 @@ class Ghost(Sprite):
         self.radius = 10
         self.collideRadius = 5
         self.color = WHITE
-        self.node = node
-        self.set_position()
-        self.target = node
+        # self.node = node
+        # self.set_position()
+        # self.target = node
         self.visible = True
         self.disablePortal = False
         self.goal = Vector()
@@ -35,6 +36,13 @@ class Ghost(Sprite):
         self.direction_method = self.goal_direction
         self.pacman = pacman
         self.mode = ModeController(self)
+        self.set_start_node(node)
+
+    def set_start_node(self, node):
+        self.node = node
+        self.start_node = node
+        self.target = node
+        self.set_position()
 
     def set_position(self):
         self.position = self.node.position.copy()
@@ -168,13 +176,13 @@ class Ghost(Sprite):
 
 class Blinky(Ghost):
     def __init__(self, game, node, pacman=None):
-        Ghost.__init__(self, game, node, pacman)
+        super().__init__(game, node, pacman)
         self.color = RED
 
 
 class Pinky(Ghost):
     def __init__(self, game, node, pacman=None):
-        Ghost.__init__(self, game, node, pacman)
+        super().__init__(game, node, pacman)
         self.color = PINK
         self.settings = game.settings
 
@@ -192,7 +200,7 @@ class Pinky(Ghost):
 
 class Inky(Ghost):
     def __init__(self, game, node, pacman=None):
-        Ghost.__init__(self, game, node, pacman)
+        super().__init__(game, node, pacman)
         self.color = TEAL
         self.settings = game.settings
 
@@ -203,19 +211,17 @@ class Inky(Ghost):
         )
 
     def chase(self):
-        vec1 = (
+        self.goal = (
             self.pacman.position
             + self.pacman.directions[self.pacman.direction]
             * self.settings.tile_width
             * 2
         )
-        vec2 = (vec1 - self.blinky.position) * 2
-        self.goal = self.blinky.position + vec2
 
 
 class Clyde(Ghost):
     def __init__(self, game, node, pacman=None):
-        Ghost.__init__(self, game, node, pacman)
+        super().__init__(game, node, pacman)
         self.color = ORANGE
         self.settings = game.settings
 
@@ -235,15 +241,35 @@ class Ghosts:
     def __init__(self, game, node, pacman):
         self.game = game
         self.pacman = pacman
-        self.blinky = Blinky(node, pacman)
-        self.pinky = Pinky(node, pacman)
-        self.inky = Inky(node, pacman, self.blinky)
-        self.clyde = Clyde(node, pacman)
+        self.blinky = Blinky(game, node, pacman)
+        self.pinky = Pinky(game, node, pacman)
+        self.inky = Inky(game, node, pacman)
+        self.clyde = Clyde(game, node, pacman)
         self.ghosts = [self.blinky, self.pinky, self.inky, self.clyde]
 
     def update(self, dt):
         for ghost in self.ghosts:
             ghost.choose_mode(dt)
+
+    def start_freight_mode(self):
+        for ghost in self.ghosts:
+            ghost.start_freight_mode()
+
+    def set_spawn_node(self, node):
+        for ghost in self.ghosts:
+            ghost.set_spawn_node(node)
+
+    def reset(self):
+        for ghost in self.ghosts:
+            ghost.reset()
+
+    def hide(self):
+        for ghost in self.ghosts:
+            ghost.visible = False
+
+    def show(self):
+        for ghost in self.ghosts:
+            ghost.visible = True
 
 
 class MainMode:
