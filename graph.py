@@ -34,6 +34,24 @@ class NodeGroup:
         self.createNodeTable(data)
         self.connectHorizontally(data)
         self.connectVertically(data)
+        self.home_key = None
+
+    def createHomeNodes(self, xoffset, yoffset):
+        home_data = np.array(
+            [
+                ["X", "X", "+", "X", "X"],
+                ["X", "X", ".", "X", "X"],
+                ["+", "X", ".", "X", "+"],
+                ["+", ".", "+", ".", "+"],
+                ["+", "X", "X", "X", "+"],
+            ]
+        )
+
+        self.createNodeTable(home_data, xoffset, yoffset)
+        self.connectHorizontally(home_data, xoffset, yoffset)
+        self.connectVertically(home_data, xoffset, yoffset)
+        self.home_key = self.constructKey(xoffset + 2, yoffset)
+        return self.home_key
 
     def readMazeFile(self, textfile):
         return np.loadtxt(textfile, dtype="<U1")
