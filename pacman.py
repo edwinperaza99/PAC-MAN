@@ -144,7 +144,10 @@ class Pacman(Sprite):
 
     def draw(self):
         if self.image is not None:
-            self.screen.blit(self.image, self.position.asTuple())
+            adjust = Vector(self.settings.tile_width, self.settings.tile_height) / 2
+            p = self.position - adjust
+            self.screen.blit(self.image, p.asTuple())
+            # self.screen.blit(self.image, self.position.asTuple())
         else:
             p = self.position.asInt()
             pg.draw.circle(

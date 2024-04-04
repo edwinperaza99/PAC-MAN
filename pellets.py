@@ -10,8 +10,11 @@ class Pellet(Sprite):
         super().__init__()
         self.settings = game.settings
         # TODO: make sure that adding 8 and 4 does not break the game
+        # self.position = Vector(
+        #     column * self.settings.tile_width + 8, row * self.settings.tile_height + 4
+        # )
         self.position = Vector(
-            column * self.settings.tile_width + 8, row * self.settings.tile_height + 4
+            column * self.settings.tile_width, row * self.settings.tile_height
         )
         self.color = WHITE
         self.radius = int(2 * self.settings.tile_width / 16)
@@ -27,16 +30,28 @@ class Pellet(Sprite):
         if self.visible:
             # p = self.position.asInt()
             # pg.draw.circle(screen, self.color, p, self.radius)
+            # adjust = Vector(self.settings.tile_width, self.settings.tile_height) / 2
+            # adjust = Vector(8, 4)
+            # p = self.position + adjust
+            offset_x = 8  # Adjust the offset as needed
+            offset_y = 4  # Adjust the offset as needed
+            # Create a temporary rect for drawing at an offset position
+            temp_rect = self.rect.copy()
+            temp_rect.x += offset_x
+            temp_rect.y += offset_y
             pg.draw.circle(
                 self.image, self.color, (self.radius, self.radius), self.radius
             )
-            screen.blit(self.image, self.rect)
+            # pg.draw.circle(self.image, self.color, p.asTuple(), self.radius)
+            screen.blit(self.image, temp_rect)
 
 
 class PowerPellet(Pellet):
     def __init__(self, game, row, column):
         Pellet.__init__(self, game, row, column)
         self.radius = int(8 * self.settings.tile_width / 16)
+        self.image = pg.Surface((self.radius * 2, self.radius * 2), pg.SRCALPHA)
+        self.rect = self.image.get_rect(center=self.position.asInt())
         self.points = self.settings.power_pellet_points
         self.flashTime = 0.2
         self.timer = 0
@@ -46,6 +61,20 @@ class PowerPellet(Pellet):
         if self.timer >= self.flashTime:
             self.visible = not self.visible
             self.timer = 0
+
+    # TODO: testing adjusting where the power pellet is drawn
+    # def draw(self, screen):
+    #     if self.visible:
+    #         offset_x = 8  # Adjust the offset as needed
+    #         offset_y = 4  # Adjust the offset as needed
+    #         # Create a temporary rect for drawing at an offset position
+    #         temp_rect = self.rect.copy()
+    #         temp_rect.x += offset_x
+    #         temp_rect.y += offset_y
+    #         pg.draw.circle(
+    #             self.image, self.color, (self.radius, self.radius), self.radius
+    #         )
+    #         screen.blit(self.image, temp_rect)
 
 
 class PelletGroup:
