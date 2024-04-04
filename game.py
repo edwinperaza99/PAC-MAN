@@ -78,15 +78,9 @@ class Game:
     def setBackground(self):
         self.background_norm = pg.surface.Surface(self.settings.screen_size).convert()
         self.background_norm.fill(self.settings.bg_color)
-        self.background_flash = pg.surface.Surface(self.settings.screen_size).convert()
-        # self.background_flash.fill(self.settings.bg_color)
         self.background_norm = self.maze_sprites.constructBackground(
             self.background_norm, self.stats.level % 5 + 1
         )
-        # self.background_flash = self.maze_sprites.constructBackground(
-        #     self.background_flash, 5
-        # )
-        # self.flashBG = False
         self.background = self.background_norm
 
     def check_events(self):

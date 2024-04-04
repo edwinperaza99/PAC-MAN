@@ -14,6 +14,7 @@ class LaunchScreen:
         self.text_color = (255, 255, 255)
         self.font = pg.font.SysFont(None, 68)
         self.logo = pg.image.load("images/pac-man-logo.png")
+        self.ghost_image = pg.image.load("images/ghosts_2.png")
         self.play_button = Button(
             game=self.game,
             text="Play",
@@ -42,7 +43,7 @@ class LaunchScreen:
     def display_logo(self):
         self.logo_rect = self.logo.get_rect()
         self.logo_rect.centerx = self.screen_rect.centerx
-        self.logo_rect.top = self.screen_rect.top + 50
+        self.logo_rect.top = self.screen_rect.top + 30
         self.screen.blit(self.logo, self.logo_rect)
 
     def display_high_score(self):
@@ -60,7 +61,7 @@ class LaunchScreen:
         high_score_value = f"{high_score:,}"
 
         self.high_score_value_image = self.font.render(
-            high_score_value, True, self.text_color, self.settings.bg_color
+            high_score_value, True, (255, 223, 0), self.settings.bg_color
         )
 
         self.high_score_value_rect = self.high_score_value_image.get_rect()
@@ -70,10 +71,17 @@ class LaunchScreen:
         self.screen.blit(self.high_score_image, self.high_score_rect)
         self.screen.blit(self.high_score_value_image, self.high_score_value_rect)
 
+    def display_ghosts(self):
+        self.ghost_image_rect = self.ghost_image.get_rect()
+        self.ghost_image_rect.centerx = self.screen_rect.centerx
+        self.ghost_image_rect.top = self.high_score_value_rect.bottom + 20
+        self.screen.blit(self.ghost_image, self.ghost_image_rect)
+
     def draw(self):
         self.screen.fill(self.settings.bg_color)
         self.display_logo()
         self.display_high_score()
+        self.display_ghosts()
         self.play_button.update()
         pg.display.flip()
 
