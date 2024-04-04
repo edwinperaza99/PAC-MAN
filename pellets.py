@@ -9,14 +9,16 @@ class Pellet(Sprite):
     def __init__(self, game, row, column):
         super().__init__()
         self.settings = game.settings
+        # TODO: make sure that adding 8 and 4 does not break the game
         self.position = Vector(
-            column * self.settings.tile_width, row * self.settings.tile_height
+            column * self.settings.tile_width + 8, row * self.settings.tile_height + 4
         )
         self.color = WHITE
-        self.radius = int(4 * self.settings.tile_width / 16)
+        self.radius = int(2 * self.settings.tile_width / 16)
         # self.collideRadius = int(4 * self.settings.tile_width / 16)
         self.image = pg.Surface((self.radius * 2, self.radius * 2), pg.SRCALPHA)
         # pg.draw.circle(self.image, self.color, (self.radius, self.radius), self.radius)
+        # self.position += Vector(self.radius, self.radius) / 2
         self.rect = self.image.get_rect(center=self.position.asInt())
         self.points = self.settings.pellet_points
         self.visible = True
@@ -83,6 +85,7 @@ class PelletGroup:
         # check if pelletlist is empty
         if self.isEmpty():
             # handle changing to next level
+            self.stats.level += 1
             self.game.next_level()
 
         self.draw(self.screen)

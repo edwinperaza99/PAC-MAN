@@ -64,13 +64,13 @@ class Game:
         self.goal = Vector()
         # TODO: set maze sprites here
         self.background = None
-        self.setBackground()
+        # self.setBackground()
         self.maze_sprites = MazeSprites(
             game=self, mazefile="maze_1.txt", rotfile="maze_1_rotation.txt"
         )
-        self.background = self.maze_sprites.constructBackground(
-            self.background, self.level % 5
-        )
+        # self.background = self.maze_sprites.constructBackground(
+        #     self.background, self.level % 5
+        # )
         self.setBackground()
 
     def setBackground(self):
@@ -78,9 +78,9 @@ class Game:
         self.background_norm.fill(self.settings.bg_color)
         self.background_flash = pg.surface.Surface(self.settings.screen_size).convert()
         # self.background_flash.fill(self.settings.bg_color)
-        # self.background_norm = self.maze_sprites.constructBackground(
-        #     self.background_norm, self.level % 5
-        # )
+        self.background_norm = self.maze_sprites.constructBackground(
+            self.background_norm, self.stats.level % 5 + 1
+        )
         # self.background_flash = self.maze_sprites.constructBackground(
         #     self.background_flash, 5
         # )
@@ -123,6 +123,7 @@ class Game:
 
     def restart(self):
         self.screen.fill(self.settings.bg_color)
+        self.setBackground()
         # self.ship.reset()
         # self.aliens.reset()
         # self.settings.initialize_dynamic_settings()
@@ -170,17 +171,18 @@ class Game:
     def play(self):
         self.launch_screen.run()
         finished = False
-        self.screen.fill(self.settings.bg_color)
+        # self.screen.fill(self.settings.bg_color)
+        # self.screen.blit(self.background, (0, 0))
 
         while not finished:
             self.check_events()  # exits if Cmd-Q on macOS or Ctrl-Q on other OS
 
             if self.game_active or self.first:
                 self.first = False
-                self.screen.fill(self.settings.bg_color)
+                # self.screen.fill(self.settings.bg_color)
                 self.screen.blit(self.background, (0, 0))
                 self.sb.update()
-                self.nodes.update()
+                # self.nodes.update()
                 # self.board.update()
                 dt = self.clock.tick(30) / 1000.0
                 self.pacman.update(dt=dt)
