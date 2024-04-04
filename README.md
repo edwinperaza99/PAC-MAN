@@ -34,7 +34,7 @@ environment and install all the necessary packages
 sh run_venv.sh
 ```
 
-The main file is game.py, to run program use command:
+The main file is game.py, to run program use the command:
 
 ```python
 python3 game.py
