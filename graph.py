@@ -126,3 +126,7 @@ class NodeGroup:
     def update(self):
         for node in self.nodesLUT.values():
             node.draw(self.screen)
+
+
+if __name__ == "__main__":
+    print("\nERROR: graph.py is the wrong file! Run play from game.py\n")

@@ -8,6 +8,9 @@ class Sound:
         self.game = game
         mixer.init()
         # self.ship_laser = mixer.Sound("sounds/ship_laser.wav")
+        self.waka_waka = mixer.Sound("sounds/waka_waka.wav")
+        self.waka_channel = pg.mixer.Channel(1)
+        self.eating_ghost = mixer.Sound("sounds/eating_ghost.wav")
         self.current_song = 0
         self.songs = ["sounds/Melody.wav", "sounds/koala.wav", "sounds/This_Groove.wav"]
         self.volume = 0.25
@@ -57,6 +60,16 @@ class Sound:
         # self.play_music("sounds/waka_waka.wav")
         # self.set_volume(self.volume)
         # self.stop_music()
+
+    def play_waka_waka(self):
+        if not self.waka_channel.get_busy():
+            self.waka_channel.play(self.waka_waka)
+
+    def play_eating_ghost(self):
+        self.pause_music()
+        mixer.Sound.play(self.eating_ghost)
+        time.sleep(0.1)
+        self.unpause_music()
 
     def play_ship_laser(self):
         mixer.Sound.play(self.ship_laser)

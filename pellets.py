@@ -108,6 +108,7 @@ class PelletGroup:
                 self.ghosts.start_freight_mode()
             else:
                 self.stats.score += self.settings.pellet_points
+            self.game.sound.play_waka_waka()
             self.sb.prep_score()
             self.sb.check_high_score()
             self.num_eaten += 1
@@ -143,3 +144,7 @@ class PelletGroup:
     def draw(self, screen):
         for pellet in self.pelletList:
             pellet.draw(screen)
+
+
+if __name__ == "__main__":
+    print("\nERROR: pellets.py is the wrong file! Run play from game.py\n")

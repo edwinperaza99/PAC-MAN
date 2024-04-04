@@ -158,3 +158,7 @@ class Pacman(Sprite):
                 p,
                 self.settings.tile_width // 2,
             )
+
+
+if __name__ == "__main__":
+    print("\nERROR: pacman.py is the wrong file! Run play from game.py\n")

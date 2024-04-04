@@ -164,3 +164,29 @@ class MazeSprites(Spritesheet):
 
     def rotate(self, sprite, value):
         return pg.transform.rotate(sprite, value * 90)
+
+
+class LifeSprites(Spritesheet):
+    def __init__(self, game):
+        super().__init__(game)
+        self.game = game
+        self.lives_left = self.game.stats.lives_left
+        self.resetLives(self.lives_left)
+
+    def removeImage(self):
+        if len(self.images) > 0:
+            self.images.pop(0)
+
+    def resetLives(self, num_lives):
+        self.images = []
+        for i in range(num_lives):
+            self.images.append(self.getImage(0, 0))
+
+    def getImage(self, x, y):
+        return Spritesheet.getImage(
+            self, x, y, 2 * self.settings.tile_width, 2 * self.settings.tile_height
+        )
+
+
+if __name__ == "__main__":
+    print("\nERROR: spritesheet.py is the wrong file! Run play from game.py\n")

@@ -276,16 +276,21 @@ class Ghosts:
             if pygame.sprite.collide_circle(ghost, self.pacman):
                 if ghost.mode.current is FREIGHT:
                     ghost.start_spawn()
+                    self.game.sound.play_eating_ghost()
                     self.stats.score += self.game.settings.ghost_points
                     self.sb.prep_score()
                     self.sb.check_high_score()
-                else:
-                    pass
+                elif ghost.mode.current is not SPAWN:
+                    if self.pacman.alive:
+                        self.stats.lives_left -= 1
+                        self.game.lifesprites.removeImage()
                 # TODO: handle pacman death
                 # elif ghost.mode.current is not SPAWN:
                 #     self.pacman.die()
 
     def start_freight_mode(self):
+        self.game.sound.stop_music()
+        self.game.sound.play_music("sounds/power_pellet.wav")
         for ghost in self.ghosts:
             ghost.start_freight_mode()
 
@@ -356,6 +361,8 @@ class ModeController:
             self.timer += dt
             if self.timer >= self.time:
                 self.time = None
+                # TODO: stop music here
+                self.ghost.game.sound.stop_music()
                 self.ghost.normal_mode()
                 self.current = self.mainmode.mode
         elif self.current in [SCATTER, CHASE]:
@@ -364,3 +371,7 @@ class ModeController:
             if self.ghost.node == self.ghost.spawn_node:
                 self.ghost.normal_mode()
                 self.current = self.mainmode.mode
+
+
+if __name__ == "__main__":
+    print("\nERROR: ghost.py is the wrong file! Run play from game.py\n")

@@ -23,3 +23,7 @@ BLINKY = 4
 PINKY = 5
 INKY = 6
 CLYDE = 7
+
+
+if __name__ == "__main__":
+    print("\nERROR: constants.py is the wrong file! Run play from game.py\n")

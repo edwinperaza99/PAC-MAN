@@ -18,7 +18,7 @@ from ghosts import Ghosts
 # from button import Button
 from launch_screen import LaunchScreen
 from constants import *
-from spritesheet import MazeSprites
+from spritesheet import MazeSprites, LifeSprites
 
 
 class Game:
@@ -43,6 +43,8 @@ class Game:
         self.stats = GameStats(game=self)
         self.level = self.stats.level
         # self.board = Board(game=self)
+        # TODO: check if this works
+        self.lifesprites = LifeSprites(game=self)
         self.sb = Scoreboard(game=self)
         self.launch_screen = LaunchScreen(game=self)
         self.game_active = False  # MUST be before Button is created
@@ -130,14 +132,14 @@ class Game:
         # TODO: check if all the code below works
         # self.settings.initialize_dynamic_settings()
         # self.screen.fill(self.settings.bg_color)
-
+        self.lifesprites.resetLives(self.stats.lives_left)
         self.screen.blit(self.background, (0, 0))
         self.sb.update()
         # self.nodes.update()
         # self.board.update()
         dt = self.clock.tick(30) / 1000.0
         self.pacman.update(dt=dt)
-        self.pellets.update(dt=dt, pacman=self.pacman)
+        # self.pellets.update(dt=dt, pacman=self.pacman)
         self.ghosts.update(dt=dt)
         pg.display.flip()
         self.sound.play_start_up()
