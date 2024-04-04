@@ -97,7 +97,10 @@ class Game:
                 sys.exit()
             elif type == pg.KEYDOWN:
                 key = event.key
-                if key == pg.K_p:
+                if key == pg.K_q:
+                    pg.quit()
+                    sys.exit()
+                elif key == pg.K_p:
                     pass
                     # self.play_button.select(True)
                     # self.play_button.press()
@@ -124,6 +127,8 @@ class Game:
         # self.ship.reset()
         # self.aliens.reset()
         # TODO: check if all the code below works
+        # self.stats.reset()
+        # self.pellets = PelletGroup(game=self, pelletfile="maze_1.txt")
         # self.settings.initialize_dynamic_settings()
         # self.screen.fill(self.settings.bg_color)
         self.lifesprites.resetLives(self.stats.lives_left)
@@ -144,6 +149,7 @@ class Game:
         # self.sound.play_game_over()
         self.first = True
         self.game_active = False
+        self.pellets = PelletGroup(game=self, pelletfile="maze_1.txt")
         self.stats.reset()
         self.sound.reset()
         # self.restart()

@@ -30,6 +30,11 @@ class LaunchScreen:
             if type == pg.QUIT:
                 pg.quit()
                 sys.exit()
+            elif type == pg.KEYDOWN:
+                key = event.key
+                if key == pg.K_q:
+                    pg.quit()
+                    sys.exit()
             elif type == pg.MOUSEBUTTONDOWN:
                 b = self.play_button
                 x, y = pg.mouse.get_pos()

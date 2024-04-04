@@ -25,7 +25,10 @@ class Spritesheet:
         x *= self.tile_width
         y *= self.tile_height
         self.sheet.set_clip(pg.Rect(x, y, width, height))
-        return self.sheet.subsurface(self.sheet.get_clip())
+        # return self.sheet.subsurface(self.sheet.get_clip())
+        image = self.sheet.subsurface(self.sheet.get_clip()).convert_alpha()
+        image.set_colorkey(image.get_at((0, 0)))  # Set color key for each sprite
+        return image
 
 
 class PacmanSprites(Spritesheet):

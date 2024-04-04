@@ -126,6 +126,7 @@ class Pacman(Sprite):
             if self.sprites.animations[DEATH].finished:
                 if self.stats.lives_left > 0:
                     self.reset()
+                    self.game.restart()
                 else:
                     self.game.game_over()
 
