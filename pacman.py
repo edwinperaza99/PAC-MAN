@@ -3,6 +3,7 @@ from pygame.sprite import Sprite
 from vector import Vector
 from sound import Sound
 from constants import *
+from spritesheet import PacmanSprites
 
 
 class Pacman(Sprite):
@@ -39,6 +40,8 @@ class Pacman(Sprite):
         self.target = node
         self.clock = pg.time.Clock()
         self.initial_node = node
+        self.image = None
+        self.sprites = PacmanSprites(game, self)
 
     def set_position(self):
         self.position = self.node.position.copy()
@@ -140,10 +143,13 @@ class Pacman(Sprite):
         self.draw()
 
     def draw(self):
-        p = self.position.asInt()
-        pg.draw.circle(
-            self.screen,
-            YELLOW,
-            p,
-            self.settings.tile_width // 2,
-        )
+        if self.image is not None:
+            self.screen.blit(self.image, self.position.asTuple())
+        else:
+            p = self.position.asInt()
+            pg.draw.circle(
+                self.screen,
+                YELLOW,
+                p,
+                self.settings.tile_width // 2,
+            )

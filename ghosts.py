@@ -4,6 +4,7 @@ from pygame.sprite import Sprite
 from vector import Vector
 from constants import *
 from random import randint
+from spritesheet import GhostSprites
 
 
 class Ghost(Sprite):
@@ -37,6 +38,7 @@ class Ghost(Sprite):
         self.pacman = pacman
         self.mode = ModeController(self)
         self.set_start_node(node)
+        self.image = None
 
     def set_start_node(self, node):
         self.node = node
@@ -170,14 +172,19 @@ class Ghost(Sprite):
 
     def draw(self, screen):
         if self.visible:
-            p = self.position.asInt()
-            pygame.draw.circle(screen, self.color, p, self.radius)
+            if self.image is not None:
+                screen.blit(self.image, self.position.asTuple())
+            else:
+                p = self.position.asInt()
+                pygame.draw.circle(screen, self.color, p, self.radius)
 
 
 class Blinky(Ghost):
     def __init__(self, game, node, pacman=None):
         super().__init__(game, node, pacman)
         self.color = RED
+        self.name = BLINKY
+        self.sprites = GhostSprites(game, self)
 
 
 class Pinky(Ghost):
@@ -185,6 +192,8 @@ class Pinky(Ghost):
         super().__init__(game, node, pacman)
         self.color = PINK
         self.settings = game.settings
+        self.name = PINKY
+        self.sprites = GhostSprites(game, self)
 
     def scatter(self):
         self.goal = Vector(self.settings.tile_width * self.settings.board_cols, 0)
@@ -203,6 +212,8 @@ class Inky(Ghost):
         super().__init__(game, node, pacman)
         self.color = TEAL
         self.settings = game.settings
+        self.name = INKY
+        self.sprites = GhostSprites(game, self)
 
     def scatter(self):
         self.goal = Vector(
@@ -224,6 +235,8 @@ class Clyde(Ghost):
         super().__init__(game, node, pacman)
         self.color = ORANGE
         self.settings = game.settings
+        self.name = CLYDE
+        self.sprites = GhostSprites(game, self)
 
     def scatter(self):
         self.goal = Vector(0, self.settings.tile_height * self.settings.board_rows)

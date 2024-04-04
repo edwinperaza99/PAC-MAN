@@ -18,6 +18,7 @@ from ghosts import Ghosts
 # from button import Button
 from launch_screen import LaunchScreen
 from constants import *
+from spritesheet import MazeSprites
 
 
 class Game:
@@ -31,9 +32,7 @@ class Game:
     def __init__(self):
         pg.init()
         self.settings = Settings()
-        self.screen = pg.display.set_mode(
-            (self.settings.screen_width, self.settings.screen_height)
-        )
+        self.screen = pg.display.set_mode(self.settings.screen_size, 0, 32)
         pg.display.set_caption("PAC-MAN")
         self.nodes = NodeGroup(game=self, level="maze_1.txt")
         self.nodes.setPortalPair((0, 17), (27, 17))
@@ -42,6 +41,7 @@ class Game:
         self.nodes.connectHomeNodes(home_key, (15, 14), RIGHT)
         self.sound = Sound(game=self)
         self.stats = GameStats(game=self)
+        self.level = self.stats.level
         # self.board = Board(game=self)
         self.sb = Scoreboard(game=self)
         self.launch_screen = LaunchScreen(game=self)
@@ -62,6 +62,30 @@ class Game:
         # self.play_button = Button(game=self, text="Play")
         self.clock = pg.time.Clock()
         self.goal = Vector()
+        # TODO: set maze sprites here
+        self.background = None
+        self.setBackground()
+        self.maze_sprites = MazeSprites(
+            game=self, mazefile="maze_1.txt", rotfile="maze_1_rotation.txt"
+        )
+        self.background = self.maze_sprites.constructBackground(
+            self.background, self.level % 5
+        )
+        self.setBackground()
+
+    def setBackground(self):
+        self.background_norm = pg.surface.Surface(self.settings.screen_size).convert()
+        self.background_norm.fill(self.settings.bg_color)
+        self.background_flash = pg.surface.Surface(self.settings.screen_size).convert()
+        # self.background_flash.fill(self.settings.bg_color)
+        # self.background_norm = self.maze_sprites.constructBackground(
+        #     self.background_norm, self.level % 5
+        # )
+        # self.background_flash = self.maze_sprites.constructBackground(
+        #     self.background_flash, 5
+        # )
+        # self.flashBG = False
+        self.background = self.background_norm
 
     def check_events(self):
         for event in pg.event.get():
@@ -154,6 +178,7 @@ class Game:
             if self.game_active or self.first:
                 self.first = False
                 self.screen.fill(self.settings.bg_color)
+                self.screen.blit(self.background, (0, 0))
                 self.sb.update()
                 self.nodes.update()
                 # self.board.update()

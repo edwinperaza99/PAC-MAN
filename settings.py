@@ -16,6 +16,7 @@ class Settings:
         # was using 600 x 750
         self.screen_width = self.tile_width * self.board_cols
         self.screen_height = self.tile_height * self.board_rows
+        self.screen_size = (self.screen_width, self.screen_height)
 
 
 if __name__ == "__main__":
