@@ -15,7 +15,7 @@ class Scoreboard:
         self.text_color = (255, 255, 255)  # white color
         # self.text_color = (30, 30, 30) # dark color
         # might change font to 'couriernew' or 'courier'
-        self.font = pg.font.SysFont(None, 28)
+        self.font = pg.font.SysFont(None, 24)
         self.prep()
         self.prep_high_score()
 

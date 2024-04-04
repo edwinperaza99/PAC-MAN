@@ -42,6 +42,7 @@ class Pacman(Sprite):
         self.initial_node = node
         self.image = None
         self.sprites = PacmanSprites(game, self)
+        self.alive = True
 
     def set_position(self):
         self.position = self.node.position.copy()
@@ -51,7 +52,7 @@ class Pacman(Sprite):
         self.target = self.initial_node
         self.set_position()
         self.direction = STOP
-        self.is_dying = False
+        self.alive = True
         # set timer to regular pacman sprite here
 
     def add_speed(self, speed):
@@ -111,6 +112,7 @@ class Pacman(Sprite):
         return False
 
     def update(self, dt):
+        self.sprites.update(dt)
         self.rect = pg.Rect(self.position.asInt(), self.width_height)
         # TODO: change if pacman is dying and change sprites
         # if not self.is_dying:

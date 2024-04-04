@@ -39,6 +39,8 @@ class Ghost(Sprite):
         self.mode = ModeController(self)
         self.set_start_node(node)
         self.image = None
+        self.width_height = (5, 5)
+        self.rect = pygame.Rect(self.position.asInt(), self.width_height)
 
     def set_start_node(self, node):
         self.node = node
@@ -52,6 +54,7 @@ class Ghost(Sprite):
     def reset(self):
         self.set_position()
         self.is_dying = False
+        self.mode.set_spawn_mode()
         # set timer to regular pacman sprite here
 
     def validate_direction(self, direction):
@@ -115,6 +118,7 @@ class Ghost(Sprite):
         return directions[index]
 
     def update(self, dt):
+        self.rect = pygame.Rect(self.position.asInt(), self.width_height)
         self.position += self.directions[self.direction] * self.speed * dt
 
         if self.overshot_target():
@@ -157,6 +161,7 @@ class Ghost(Sprite):
         self.direction_method = self.goal_direction
 
     def choose_mode(self, dt):
+        self.sprites.update(dt)
         self.mode.update(dt)
         if self.mode.current is SCATTER:
             self.scatter()
@@ -173,7 +178,10 @@ class Ghost(Sprite):
     def draw(self, screen):
         if self.visible:
             if self.image is not None:
-                screen.blit(self.image, self.position.asTuple())
+                adjust = Vector(self.settings.tile_width, self.settings.tile_height) / 2
+                p = self.position - adjust
+                self.screen.blit(self.image, p.asTuple())
+                # screen.blit(self.image, self.position.asTuple())
             else:
                 p = self.position.asInt()
                 pygame.draw.circle(screen, self.color, p, self.radius)
@@ -258,11 +266,24 @@ class Ghosts:
         self.pinky = Pinky(game, node, pacman)
         self.inky = Inky(game, node, pacman)
         self.clyde = Clyde(game, node, pacman)
+        self.sb = game.sb
+        self.stats = game.stats
         self.ghosts = [self.blinky, self.pinky, self.inky, self.clyde]
 
     def update(self, dt):
         for ghost in self.ghosts:
             ghost.choose_mode(dt)
+            if pygame.sprite.collide_circle(ghost, self.pacman):
+                if ghost.mode.current is FREIGHT:
+                    ghost.start_spawn()
+                    self.stats.score += self.game.settings.ghost_points
+                    self.sb.prep_score()
+                    self.sb.check_high_score()
+                else:
+                    pass
+                # TODO: handle pacman death
+                # elif ghost.mode.current is not SPAWN:
+                #     self.pacman.die()
 
     def start_freight_mode(self):
         for ghost in self.ghosts:

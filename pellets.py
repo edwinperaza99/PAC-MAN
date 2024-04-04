@@ -89,7 +89,7 @@ class PelletGroup:
         self.pelletList = pg.sprite.Group()
         self.powerpellets = []
         self.createPelletList(pelletfile)
-        self.numEaten = 0
+        self.num_eaten = 0
 
     def update(self, dt, pacman):
         for powerpellet in self.powerpellets:
@@ -110,11 +110,10 @@ class PelletGroup:
                 self.stats.score += self.settings.pellet_points
             self.sb.prep_score()
             self.sb.check_high_score()
-            self.numEaten += 1
+            self.num_eaten += 1
         # check if pelletlist is empty
         if self.isEmpty():
             # handle changing to next level
-            self.stats.level += 1
             self.game.next_level()
 
         self.draw(self.screen)

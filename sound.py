@@ -54,7 +54,7 @@ class Sound:
         self.stop_music()
         self.play_once("sounds/start_up.wav")
         time.sleep(5)
-        self.play_music("sounds/waka_waka.wav")
+        # self.play_music("sounds/waka_waka.wav")
         # self.set_volume(self.volume)
         # self.stop_music()
 

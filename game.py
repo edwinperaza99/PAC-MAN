@@ -124,9 +124,23 @@ class Game:
     def restart(self):
         self.screen.fill(self.settings.bg_color)
         self.setBackground()
+        self.ghosts.reset()
         # self.ship.reset()
         # self.aliens.reset()
+        # TODO: check if all the code below works
         # self.settings.initialize_dynamic_settings()
+        # self.screen.fill(self.settings.bg_color)
+
+        self.screen.blit(self.background, (0, 0))
+        self.sb.update()
+        # self.nodes.update()
+        # self.board.update()
+        dt = self.clock.tick(30) / 1000.0
+        self.pacman.update(dt=dt)
+        self.pellets.update(dt=dt, pacman=self.pacman)
+        self.ghosts.update(dt=dt)
+        pg.display.flip()
+        self.sound.play_start_up()
 
     def game_over(self):
         print("Game Over !")
@@ -143,16 +157,15 @@ class Game:
         self.game_active = True
         self.first = False
         # TODO: add music later
-        self.sound.stop_music()
-        # self.sound.play_start_up()
         # TODO: ADD MUSIC
         # self.sound.play_music(self.sound.select_song())
 
     def next_level(self):
         # TODO: probably add a pause for a smoother transition between levels
         # maybe even play a sound
-        self.restart()
         self.stats.level += 1
+        self.activate()
+        self.restart()
         self.sb.prep_level()
         self.sb.prep_score()
         self.pellets = PelletGroup(game=self, pelletfile="maze_1.txt")
@@ -178,6 +191,11 @@ class Game:
             self.check_events()  # exits if Cmd-Q on macOS or Ctrl-Q on other OS
 
             if self.game_active or self.first:
+                if not pg.mixer.music.get_busy():
+                    if len(self.pellets.pelletList) >= 150:
+                        self.sound.play_music("sounds/ghost_siren.wav")
+                    else:
+                        self.sound.play_music("sounds/ghost_siren_2.wav")
                 self.first = False
                 # self.screen.fill(self.settings.bg_color)
                 self.screen.blit(self.background, (0, 0))
