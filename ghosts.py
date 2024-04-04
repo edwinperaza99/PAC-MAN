@@ -262,6 +262,7 @@ class Ghosts:
     def __init__(self, game, node, pacman):
         self.game = game
         self.pacman = pacman
+        self.nodes = game.nodes
         self.blinky = Blinky(game, node, pacman)
         self.pinky = Pinky(game, node, pacman)
         self.inky = Inky(game, node, pacman)
@@ -271,22 +272,35 @@ class Ghosts:
         self.ghosts = [self.blinky, self.pinky, self.inky, self.clyde]
 
     def update(self, dt):
-        for ghost in self.ghosts:
-            ghost.choose_mode(dt)
-            if pygame.sprite.collide_circle(ghost, self.pacman):
-                if ghost.mode.current is FREIGHT:
-                    ghost.start_spawn()
-                    self.game.sound.play_eating_ghost()
-                    self.stats.score += self.game.settings.ghost_points
-                    self.sb.prep_score()
-                    self.sb.check_high_score()
-                elif ghost.mode.current is not SPAWN:
-                    if self.pacman.alive:
-                        self.stats.lives_left -= 1
-                        self.game.lifesprites.removeImage()
-                # TODO: handle pacman death
-                # elif ghost.mode.current is not SPAWN:
-                #     self.pacman.die()
+        if self.pacman.alive:
+            for ghost in self.ghosts:
+                ghost.choose_mode(dt)
+                if pygame.sprite.collide_circle(ghost, self.pacman):
+                    if ghost.mode.current is FREIGHT:
+                        ghost.start_spawn()
+                        self.game.sound.play_eating_ghost()
+                        self.stats.score += self.game.settings.ghost_points
+                        self.sb.prep_score()
+                        self.sb.check_high_score()
+                    elif ghost.mode.current is not SPAWN:
+                        if self.pacman.alive:
+                            self.pacman.die()
+                            self.stats.lives_left -= 1
+                            self.game.lifesprites.removeImage()
+                            # self.pacman.reset()
+                            self.reset()
+                            self.blinky.set_start_node(
+                                self.nodes.getNodeFromTiles(2 + 11.5, 0 + 14)
+                            )
+                            self.pinky.set_start_node(
+                                self.nodes.getNodeFromTiles(2 + 11.5, 3 + 14)
+                            )
+                            self.inky.set_start_node(
+                                self.nodes.getNodeFromTiles(0 + 11.5, 3 + 14)
+                            )
+                            self.clyde.set_start_node(
+                                self.nodes.getNodeFromTiles(4 + 11.5, 3 + 14)
+                            )
 
     def start_freight_mode(self):
         self.game.sound.stop_music()

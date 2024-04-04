@@ -147,13 +147,13 @@ class Game:
     def game_over(self):
         print("Game Over !")
         pg.mouse.set_visible(True)
-        self.sound.play_game_over()
+        # self.sound.play_game_over()
         self.first = True
         self.game_active = False
         self.stats.reset()
         self.sound.reset()
-        self.restart()
-        # self.launch_screen.run()  # kinda works but there is a bug
+        # self.restart()
+        self.launch_screen.run()  # kinda works but there is a bug
 
     def activate(self):
         self.game_active = True
@@ -193,7 +193,7 @@ class Game:
             self.check_events()  # exits if Cmd-Q on macOS or Ctrl-Q on other OS
 
             if self.game_active or self.first:
-                if not pg.mixer.music.get_busy():
+                if not pg.mixer.music.get_busy() and self.pacman.alive:
                     if len(self.pellets.pelletList) >= 150:
                         self.sound.play_music("sounds/ghost_siren.wav")
                     else:

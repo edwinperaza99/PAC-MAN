@@ -12,6 +12,7 @@ class Scoreboard:
         self.screen_rect = game.screen.get_rect()
         self.settings = game.settings
         self.stats = game.stats
+        self.lifesprites = game.lifesprites
         self.text_color = (255, 255, 255)  # white color
         # self.text_color = (30, 30, 30) # dark color
         # might change font to 'couriernew' or 'courier'
@@ -76,16 +77,17 @@ class Scoreboard:
         self.level_rect.bottom = self.screen_rect.bottom - 10
 
     def prep_lives(self):
-        self.lives = Group()
-        for live_number in range(self.stats.lives_left):
-            # TODO: change ship to PAC-MAN
-            # TODO: draw ships at the bottom of the screen on left hand side. same height as level
-            ship = Ship(self.game)
-            ship.rect.x = 10 + live_number * ship.rect.width
-            ship.rect.y = 10
-            # TODO: test if the next line works when pacman class is done
-            # ship.rect.y = self.level_rect.top
-            self.lives.add(ship)
+        pass
+        # self.lives = Group()
+        # for live_number in range(self.stats.lives_left):
+        #     # TODO: change ship to PAC-MAN
+        #     # TODO: draw ships at the bottom of the screen on left hand side. same height as level
+        #     ship = Ship(self.game)
+        #     ship.rect.x = 10 + live_number * ship.rect.width
+        #     ship.rect.y = 10
+        #     # TODO: test if the next line works when pacman class is done
+        #     # ship.rect.y = self.level_rect.top
+        #     self.lives.add(ship)
 
     def check_high_score(self):
         if self.stats.score > self.stats.high_score:
@@ -102,6 +104,10 @@ class Scoreboard:
         self.screen.blit(self.high_score_image, self.high_score_rect)
         self.screen.blit(self.high_score_value_image, self.high_score_value_rect)
         self.screen.blit(self.level_image, self.level_rect)
+        for i in range(len(self.lifesprites.images)):
+            x = self.lifesprites.images[i].get_width() * i
+            y = self.settings.screen_height - self.lifesprites.images[i].get_height()
+            self.screen.blit(self.lifesprites.images[i], (x, y))
         # self.ships.draw(self.screen) TODO: change ships
 
 

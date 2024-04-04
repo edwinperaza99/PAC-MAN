@@ -43,13 +43,23 @@ class Pacman(Sprite):
         self.image = None
         self.sprites = PacmanSprites(game, self)
         self.alive = True
+        self.image = self.sprites.getStartImage()
+        self.sprites.reset()
 
     def set_position(self):
         self.position = self.node.position.copy()
 
+    def die(self):
+        self.alive = False
+        self.direction = STOP
+        # TODO: play death sound here
+        self.sound.play_once("sounds/pacman_dying.wav")
+        # self.sprites.start_death_animation()
+
     def reset(self):
         self.node = self.initial_node
         self.target = self.initial_node
+        self.sprites.reset()
         self.set_position()
         self.direction = STOP
         self.alive = True
@@ -112,6 +122,13 @@ class Pacman(Sprite):
         return False
 
     def update(self, dt):
+        if not self.alive:
+            if self.sprites.animations[DEATH].finished:
+                if self.stats.lives_left > 0:
+                    self.reset()
+                else:
+                    self.game.game_over()
+
         self.sprites.update(dt)
         self.rect = pg.Rect(self.position.asInt(), self.width_height)
         # TODO: change if pacman is dying and change sprites
