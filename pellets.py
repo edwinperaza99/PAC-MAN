@@ -9,30 +9,18 @@ class Pellet(Sprite):
     def __init__(self, game, row, column):
         super().__init__()
         self.settings = game.settings
-        # TODO: make sure that adding 8 and 4 does not break the game
-        # self.position = Vector(
-        #     column * self.settings.tile_width + 8, row * self.settings.tile_height + 4
-        # )
         self.position = Vector(
             column * self.settings.tile_width, row * self.settings.tile_height
         )
         self.color = WHITE
         self.radius = int(2 * self.settings.tile_width / 16)
-        # self.collideRadius = int(4 * self.settings.tile_width / 16)
         self.image = pg.Surface((self.radius * 2, self.radius * 2), pg.SRCALPHA)
-        # pg.draw.circle(self.image, self.color, (self.radius, self.radius), self.radius)
-        # self.position += Vector(self.radius, self.radius) / 2
         self.rect = self.image.get_rect(center=self.position.asInt())
         self.points = self.settings.pellet_points
         self.visible = True
 
     def draw(self, screen):
         if self.visible:
-            # p = self.position.asInt()
-            # pg.draw.circle(screen, self.color, p, self.radius)
-            # adjust = Vector(self.settings.tile_width, self.settings.tile_height) / 2
-            # adjust = Vector(8, 4)
-            # p = self.position + adjust
             offset_x = 8  # Adjust the offset as needed
             offset_y = 4  # Adjust the offset as needed
             # Create a temporary rect for drawing at an offset position
@@ -42,7 +30,6 @@ class Pellet(Sprite):
             pg.draw.circle(
                 self.image, self.color, (self.radius, self.radius), self.radius
             )
-            # pg.draw.circle(self.image, self.color, p.asTuple(), self.radius)
             screen.blit(self.image, temp_rect)
 
 
@@ -62,20 +49,6 @@ class PowerPellet(Pellet):
             self.visible = not self.visible
             self.timer = 0
 
-    # TODO: testing adjusting where the power pellet is drawn
-    # def draw(self, screen):
-    #     if self.visible:
-    #         offset_x = 8  # Adjust the offset as needed
-    #         offset_y = 4  # Adjust the offset as needed
-    #         # Create a temporary rect for drawing at an offset position
-    #         temp_rect = self.rect.copy()
-    #         temp_rect.x += offset_x
-    #         temp_rect.y += offset_y
-    #         pg.draw.circle(
-    #             self.image, self.color, (self.radius, self.radius), self.radius
-    #         )
-    #         screen.blit(self.image, temp_rect)
-
 
 class PelletGroup:
     def __init__(self, game, pelletfile):
@@ -85,7 +58,6 @@ class PelletGroup:
         self.stats = game.stats
         self.sb = game.sb
         self.settings = game.settings
-        # self.pelletList = []
         self.pelletList = pg.sprite.Group()
         self.powerpellets = []
         self.createPelletList(pelletfile)
@@ -125,12 +97,10 @@ class PelletGroup:
             for col in range(data.shape[1]):
                 if data[row][col] in [".", "+"]:
                     pellet = Pellet(self.game, row, col)
-                    # self.pelletList.append(Pellet(self.game, row, col))
                     self.pelletList.add(pellet)
                 elif data[row][col] in ["P", "p"]:
                     pp = PowerPellet(self.game, row, col)
                     self.pelletList.add(pp)
-                    # self.pelletList.append(pp)
                     self.powerpellets.append(pp)
 
     def readPelletfile(self, textfile):

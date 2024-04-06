@@ -1,8 +1,5 @@
 import pygame as pg
 import pygame.font
-from pygame.sprite import Group
-
-# from ship import Ship TODO: import pacman
 
 
 class Scoreboard:
@@ -14,7 +11,6 @@ class Scoreboard:
         self.stats = game.stats
         self.lifesprites = game.lifesprites
         self.text_color = (255, 255, 255)  # white color
-        # self.text_color = (30, 30, 30) # dark color
         # might change font to 'couriernew' or 'courier'
         self.font = pg.font.SysFont(None, 24)
         self.prep()
@@ -23,7 +19,6 @@ class Scoreboard:
     def prep(self):
         self.prep_score()
         self.prep_level()
-        # self.prep_lives()
 
     def prep_score(self):
         rounded_score = round(self.stats.score, -1)
@@ -76,19 +71,6 @@ class Scoreboard:
         self.level_rect.right = self.screen_rect.right - 15
         self.level_rect.bottom = self.screen_rect.bottom - 10
 
-    def prep_lives(self):
-        pass
-        # self.lives = Group()
-        # for live_number in range(self.stats.lives_left):
-        #     # TODO: change ship to PAC-MAN
-        #     # TODO: draw ships at the bottom of the screen on left hand side. same height as level
-        #     ship = Ship(self.game)
-        #     ship.rect.x = 10 + live_number * ship.rect.width
-        #     ship.rect.y = 10
-        #     # TODO: test if the next line works when pacman class is done
-        #     # ship.rect.y = self.level_rect.top
-        #     self.lives.add(ship)
-
     def check_high_score(self):
         if self.stats.score > self.stats.high_score:
             self.stats.high_score = self.stats.score
@@ -108,7 +90,6 @@ class Scoreboard:
             x = self.lifesprites.images[i].get_width() * i
             y = self.settings.screen_height - self.lifesprites.images[i].get_height()
             self.screen.blit(self.lifesprites.images[i], (x, y))
-        # self.ships.draw(self.screen) TODO: change ships
 
 
 if __name__ == "__main__":

@@ -31,13 +31,11 @@ class Button:
         # handle different position of button
         if pos:
             self.rect.center = pos
-            # print(f"pos: {pos}")
             self.image_rect.center = pos
         else:
             self.rect.center = self.screen_rect.center
             self.image_rect.center = self.rect.center
 
-        # TODO: will need to check if these are even necessary
         self.visible = True
         self.clicked = False
 
@@ -56,7 +54,6 @@ class Button:
         pg.mouse.set_visible(False)
         self.sb.prep()
         self.game.activate()
-        # self.settings.initialize_dynamic_settings
         self.game.restart()
 
     def show(self):

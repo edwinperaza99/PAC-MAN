@@ -25,13 +25,7 @@ class Pacman(Sprite):
             RIGHT: Vector(1, 0),
         }
         self.direction = STOP
-
-        # TODO: add sprites for pacman here
         initial_position = self.position.asInt()  # Get initial position as a tuple
-        # self.width_height = (
-        #     self.settings.tile_width,
-        #     self.settings.tile_width,
-        # )  # Width and height
         self.width_height = (5, 5)  # Width and height for collision
         self.rect = pg.Rect(initial_position, self.width_height)
         self.is_dying = False
@@ -52,9 +46,7 @@ class Pacman(Sprite):
     def die(self):
         self.alive = False
         self.direction = STOP
-        # TODO: play death sound here
         self.sound.play_once("sounds/pacman_dying.wav")
-        # self.sprites.start_death_animation()
 
     def reset(self):
         self.node = self.initial_node
@@ -63,7 +55,6 @@ class Pacman(Sprite):
         self.set_position()
         self.direction = STOP
         self.alive = True
-        # set timer to regular pacman sprite here
 
     def add_speed(self, speed):
         # if statements to prevent diagonal movement
@@ -132,19 +123,9 @@ class Pacman(Sprite):
 
         self.sprites.update(dt)
         self.rect = pg.Rect(self.position.asInt(), self.width_height)
-        # TODO: change if pacman is dying and change sprites
-        # if not self.is_dying:
-        #     self.rect.x += self.position.x
-        #     self.rect.y += self.position.y
-        # dt = self.clock.tick(30) / 1000.0
         self.position += self.directions[self.direction] * self.speed * dt
         direction = self.get_key()
-        # if direction != STOP:
-        #     self.direction = direction
-        # self.direction = direction
-        # print(self.direction)
-        # self.node = self.get_new_target(direction)
-        # self.set_position()
+
         if self.overshot_target():
             self.node = self.target
             if self.node.neighbors[PORTAL] is not None:
@@ -167,7 +148,6 @@ class Pacman(Sprite):
             adjust = Vector(self.settings.tile_width, self.settings.tile_height) / 2
             p = self.position - adjust
             self.screen.blit(self.image, p.asTuple())
-            # self.screen.blit(self.image, self.position.asTuple())
         else:
             p = self.position.asInt()
             pg.draw.circle(

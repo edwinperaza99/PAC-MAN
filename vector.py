@@ -81,7 +81,7 @@ class Vector(object):
         while x**2 + y**2 < Vector.THRESH:
             x = randint(low, high)
             y = randint(low, high)
-        return Vector(x, y)  # TODO: fix Vectors too close to 0
+        return Vector(x, y)
 
     @staticmethod
     def run_tests():

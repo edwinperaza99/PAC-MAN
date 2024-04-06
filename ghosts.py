@@ -26,9 +26,6 @@ class Ghost(Sprite):
         self.radius = 10
         self.collideRadius = 5
         self.color = WHITE
-        # self.node = node
-        # self.set_position()
-        # self.target = node
         self.visible = True
         self.disablePortal = False
         self.goal = Vector()
@@ -55,7 +52,6 @@ class Ghost(Sprite):
         self.set_position()
         self.is_dying = False
         self.mode.set_spawn_mode()
-        # set timer to regular pacman sprite here
 
     def validate_direction(self, direction):
         if direction is not STOP:
@@ -287,7 +283,6 @@ class Ghosts:
                             self.pacman.die()
                             self.stats.lives_left -= 1
                             self.game.lifesprites.removeImage()
-                            # self.pacman.reset()
                             self.reset()
                             self.blinky.set_start_node(
                                 self.nodes.getNodeFromTiles(2 + 11.5, 0 + 14)
@@ -375,7 +370,6 @@ class ModeController:
             self.timer += dt
             if self.timer >= self.time:
                 self.time = None
-                # TODO: stop music here
                 self.ghost.game.sound.stop_music()
                 self.ghost.normal_mode()
                 self.current = self.mainmode.mode

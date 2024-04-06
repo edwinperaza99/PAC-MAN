@@ -3,7 +3,6 @@ class Settings:
         self.bg_color = (0, 0, 0)
         self.lives = 3
 
-        # NEW: constants
         self.tile_width = 16
         self.tile_height = 16
         self.board_cols = 28

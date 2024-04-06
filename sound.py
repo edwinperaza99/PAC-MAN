@@ -57,9 +57,6 @@ class Sound:
         self.stop_music()
         self.play_once("sounds/start_up.wav")
         time.sleep(5)
-        # self.play_music("sounds/waka_waka.wav")
-        # self.set_volume(self.volume)
-        # self.stop_music()
 
     def play_waka_waka(self):
         if not self.waka_channel.get_busy():
@@ -78,8 +75,6 @@ class Sound:
         self.stop_music()
         self.ship_laser.stop()
         self.alien_laser.stop()
-        # sleep for last laser sound
-        # time.sleep(2)
         self.set_volume(1)
         self.play_once("sounds/gameover.wav")
         # have to sleep for however long the last sound is...

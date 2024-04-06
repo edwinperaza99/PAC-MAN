@@ -14,7 +14,7 @@ class LaunchScreen:
         self.text_color = (255, 255, 255)
         self.font = pg.font.SysFont(None, 68)
         self.logo = pg.image.load("images/pac-man-logo.png")
-        self.ghost_image = pg.image.load("images/ghosts_2.png")
+        self.ghost_image = pg.image.load("images/ghosts.png")
         self.play_button = Button(
             game=self.game,
             text="Play",
