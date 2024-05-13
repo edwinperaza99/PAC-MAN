@@ -2,6 +2,12 @@
 
 Welcome to the classic pac-man game.
 
+<div style="display: flex; justify-content: space-between;">
+    <img src="screenshots/pacman_start.png" alt="Start screen for game" width="32%"/>
+    <img src="screenshots/pacman_gameplay_1.png" alt="Start of new game" width="32%"/>
+    <img src="screenshots/pacman_gameplay_2.png" alt="Screenshot of gameplay" width="32%"/>
+</div>
+
 ## How to Play
 
 - Use mouse to start a new game.
